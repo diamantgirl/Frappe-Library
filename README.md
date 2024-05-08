@@ -6,30 +6,38 @@ This is a test project for learning frappe and bench. This repo has the config f
 
 ## Development
 
-To start docker containers for development, clone this repo and run
+### Start dev containers on Linux
 
-### On Linux
+Clone this repo and run the following commands
+
 ```bash
 export UID
-GID=$(id -g) docker-compose up
+GID=$(id -g) docker-compose up -d
 ```
 
-### On macOS
+### Start dev containers on macOS
+
+Clone this repo and run the following commands
+
 ```bash
 UID=$(id -u) GID=$(id -g) docker-compose up
 ```
 
-Connect to the frappe dev container to use the bench cli:
+### Connect to the frappe dev container
+
+In order  to use the bench cli, connect to the frappe-dev container:
 
 ```bash
 docker exec -it frappe-dev-frappe-1 /bin/bash
 ```
 
-This opens up bash as user frappe if the user id is matched. Otherwise, run `su frappe` to change user to frappe before continuing development.
+This opens up bash shell as user frappe if the user id is matched. Otherwise, run `su frappe` to change user to frappe before continuing development.
 
 NOTE: If the user id on host is not the same as user id of frappe in the container, there could be issues with file ownership and permissions. Please refer frappe_docker docs for more information.
 
-## Creating a site
+## Creating a bench along with a new site
+
+This needs to be done only once when setting up the development environment. To start an env that has been already setup jump to next section.
 
 ```bash
 # Create bench
@@ -56,6 +64,37 @@ bench --site development.localhost console # with debugging
 ```
 
 After this step, the locally created site can be accessed via http://development.localhost:8000
+
+## Start up bench
+
+```bash
+cd frappe-bench
+
+# Start bench
+bench start # without debugging
+bench --site development.localhost console # with debugging
+```
+
+After this step, the locally created site can be accessed at [development.local:8000](http://development.localhost:8000)
+
+## Shutdown the bench
+
+When you are done for the day, stop the webserver by pressing `Ctrl+C` at the frappe dev container shell. This is optional.
+
+Stop the dev containers, using the steps below.
+
+### On Linux
+
+```bash
+export UID
+GID=$(id -g) docker-compose down
+```
+
+### On macOS
+
+```bash
+UID=$(id -u) GID=$(id -g) docker-compose down
+```
 
 ## Next steps
 
